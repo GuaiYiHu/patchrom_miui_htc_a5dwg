@@ -392,3 +392,43 @@
     .line 1443
     return-void
 .end method
+
+.method public constructor <init>(IIJJIILjava/lang/String;)V
+    .locals 1
+    .param p1, "op"    # I
+    .param p2, "mode"    # I
+    .param p3, "time"    # J
+    .param p5, "rejectTime"    # J
+    .param p7, "duration"    # I
+    .param p8, "proxyUid"    # I
+    .param p9, "proxyPackage"    # Ljava/lang/String;
+
+    .prologue
+    .line 1117
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 1119
+    iput p1, p0, Landroid/app/AppOpsManager$OpEntry;->mOp:I
+
+    .line 1120
+    iput p2, p0, Landroid/app/AppOpsManager$OpEntry;->mMode:I
+
+    .line 1121
+    iput-wide p3, p0, Landroid/app/AppOpsManager$OpEntry;->mTime:J
+
+    .line 1122
+    iput-wide p5, p0, Landroid/app/AppOpsManager$OpEntry;->mRejectTime:J
+
+    .line 1123
+    iput p7, p0, Landroid/app/AppOpsManager$OpEntry;->mDuration:I
+
+    .line 1124
+    iput p8, p0, Landroid/app/AppOpsManager$OpEntry;->mProxyUid:I
+
+    .line 1125
+    iput-object p9, p0, Landroid/app/AppOpsManager$OpEntry;->mProxyPackageName:Ljava/lang/String;
+
+    .line 1118
+    return-void
+.end method
+
