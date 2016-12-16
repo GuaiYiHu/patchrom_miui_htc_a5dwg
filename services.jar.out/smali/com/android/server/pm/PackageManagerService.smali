@@ -57088,6 +57088,15 @@
 
     .line 3181
     .local v6, "a":Landroid/content/pm/PackageParser$Activity;
+    invoke-static {}, Lmiui/securityspace/XSpaceUserHandle;->isXSpaceUserCalling()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_miui_2
+
+    or-int/lit16 p2, p2, 0x2000
+
+    :cond_miui_2
     if-eqz v6, :cond_2
 
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService;->mSettings:Lcom/android/server/pm/Settings;
@@ -57521,7 +57530,7 @@
 
     .line 15731
     .local v1, "uid":I
-    const-string/jumbo v5, "get enabled"
+    const-string v5, "get enabled"
 
     move-object v0, p0
 
@@ -57572,7 +57581,7 @@
     .line 10727
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
-    const-string/jumbo v1, "android.permission.MANAGE_USERS"
+    const-string v1, "android.permission.MANAGE_USERS"
 
     invoke-virtual {v0, v1, v2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
@@ -57586,7 +57595,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v2, "getApplicationHidden for user "
+    const-string v2, "getApplicationHidden for user "
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -57696,7 +57705,7 @@
 .end method
 
 .method public getApplicationInfo(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
-    .locals 9
+    .locals 10
     .param p1, "packageName"    # Ljava/lang/String;
     .param p2, "flags"    # I
     .param p3, "userId"    # I
@@ -57723,7 +57732,7 @@
 
     move-result v1
 
-    const-string/jumbo v5, "get application info"
+    const-string v5, "get application info"
 
     move-object v0, p0
 
@@ -57782,10 +57791,25 @@
 
     .line 3095
     invoke-static {v6, p2, v0, p3}, Landroid/content/pm/PackageParser;->generateApplicationInfo(Landroid/content/pm/PackageParser$Package;ILandroid/content/pm/PackageUserState;I)Landroid/content/pm/ApplicationInfo;
-    :try_end_1
-    .catchall {:try_start_1 .. :try_end_1} :catchall_0
+    move-result-object v0
+    
+    if-nez v0, :cond_miui_2
+    
+    invoke-static {}, Lmiui/securityspace/XSpaceUserHandle;->isXSpaceUserCalling()Z
+
+    move-result v9
+
+    if-eqz v9, :cond_miui_2
+
+    or-int/lit16 p2, p2, 0x2000
+
+    invoke-direct {p0, p1, p2, p3}, Lcom/android/server/pm/PackageManagerService;->generateApplicationInfoFromSettingsLPw(Ljava/lang/String;II)Landroid/content/pm/ApplicationInfo;
 
     move-result-object v0
+
+    :cond_miui_2
+    :try_end_1
+    .catchall {:try_start_1 .. :try_end_1} :catchall_0
 
     monitor-exit v1
 
@@ -57795,7 +57819,7 @@
     .end local v7    # "ps":Lcom/android/server/pm/PackageSetting;
     :cond_2
     :try_start_2
-    const-string/jumbo v0, "android"
+    const-string v0, "android"
 
     invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -57803,7 +57827,7 @@
 
     if-nez v0, :cond_3
 
-    const-string/jumbo v0, "system"
+    const-string v0, "system"
 
     invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -57883,13 +57907,13 @@
     if-nez v0, :cond_0
 
     .line 14242
-    const-string/jumbo v1, "PackageManager"
+    const-string v1, "PackageManager"
 
     new-instance v3, Ljava/lang/StringBuilder;
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v4, "Package doesn\'t exist in get block uninstall "
+    const-string v4, "Package doesn\'t exist in get block uninstall "
 
     invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -57966,7 +57990,7 @@
 
     .line 15742
     .local v1, "uid":I
-    const-string/jumbo v5, "get component enabled"
+    const-string v5, "get component enabled"
 
     move-object v0, p0
 
@@ -58044,7 +58068,7 @@
     .line 15332
     new-instance v3, Ljava/lang/SecurityException;
 
-    const-string/jumbo v4, "Only the system may call getDefaultAppsBackup()"
+    const-string v4, "Only the system may call getDefaultAppsBackup()"
 
     invoke-direct {v3, v4}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
@@ -58085,7 +58109,7 @@
     invoke-interface {v2, v4, v3}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
 
     .line 15340
-    const-string/jumbo v3, "da"
+    const-string v3, "da"
 
     const/4 v4, 0x0
 
@@ -58110,7 +58134,7 @@
     monitor-exit v4
 
     .line 15346
-    const-string/jumbo v3, "da"
+    const-string v3, "da"
 
     const/4 v4, 0x0
 
@@ -58296,13 +58320,13 @@
     .line 15515
     new-instance v1, Landroid/content/Intent;
 
-    const-string/jumbo v0, "android.intent.action.MAIN"
+    const-string v0, "android.intent.action.MAIN"
 
     invoke-direct {v1, v0}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
     .line 15516
     .local v1, "intent":Landroid/content/Intent;
-    const-string/jumbo v0, "android.intent.category.HOME"
+    const-string v0, "android.intent.category.HOME"
 
     invoke-virtual {v1, v0}, Landroid/content/Intent;->addCategory(Ljava/lang/String;)Landroid/content/Intent;
 
@@ -58414,7 +58438,7 @@
     move-result-object v0
 
     .line 17384
-    const-string/jumbo v1, "default_install_location"
+    const-string v1, "default_install_location"
 
     .line 17385
     const/4 v2, 0x0
@@ -58701,7 +58725,7 @@
 
     move-result v1
 
-    const-string/jumbo v5, "get installed packages"
+    const-string v5, "get installed packages"
 
     const/4 v3, 0x1
 
@@ -58991,7 +59015,7 @@
     .line 15388
     new-instance v3, Ljava/lang/SecurityException;
 
-    const-string/jumbo v4, "Only the system may call getIntentFilterVerificationBackup()"
+    const-string v4, "Only the system may call getIntentFilterVerificationBackup()"
 
     invoke-direct {v3, v4}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
@@ -59032,7 +59056,7 @@
     invoke-interface {v2, v4, v3}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
 
     .line 15396
-    const-string/jumbo v3, "iv"
+    const-string v3, "iv"
 
     const/4 v4, 0x0
 
@@ -59057,7 +59081,7 @@
     monitor-exit v4
 
     .line 15402
-    const-string/jumbo v3, "iv"
+    const-string v3, "iv"
 
     const/4 v4, 0x0
 
@@ -59215,13 +59239,13 @@
     if-nez v1, :cond_2
 
     .line 17701
-    const-string/jumbo v2, "PackageManager"
+    const-string v2, "PackageManager"
 
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v5, "KeySet requested for unknown package:"
+    const-string v5, "KeySet requested for unknown package:"
 
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -59244,7 +59268,7 @@
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v5, "Unknown package: "
+    const-string v5, "Unknown package: "
 
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -59350,7 +59374,7 @@
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 17347
-    const-string/jumbo v1, "android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+    const-string v1, "android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
 
     const/4 v2, 0x0
 
@@ -59418,7 +59442,7 @@
 
     move-result-object v4
 
-    const-string/jumbo v6, ":"
+    const-string v6, ":"
 
     invoke-virtual {v4, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -59530,7 +59554,7 @@
     move-result v1
 
     .line 2944
-    const-string/jumbo v5, "getPackageGids"
+    const-string v5, "getPackageGids"
 
     move-object v0, p0
 
@@ -59637,7 +59661,7 @@
 .end method
 
 .method public getPackageInfo(Ljava/lang/String;II)Landroid/content/pm/PackageInfo;
-    .locals 8
+    .locals 9
     .param p1, "packageName"    # Ljava/lang/String;
     .param p2, "flags"    # I
     .param p3, "userId"    # I
@@ -59664,7 +59688,7 @@
 
     move-result v1
 
-    const-string/jumbo v5, "get package info"
+    const-string v5, "get package info"
 
     move-object v0, p0
 
@@ -59695,10 +59719,25 @@
 
     .line 2870
     invoke-virtual {p0, v6, p2, p3}, Lcom/android/server/pm/PackageManagerService;->generatePackageInfo(Landroid/content/pm/PackageParser$Package;II)Landroid/content/pm/PackageInfo;
-    :try_end_0
-    .catchall {:try_start_0 .. :try_end_0} :catchall_0
+    move-result-object v0
+
+    if-nez v7, :cond_miui_1
+
+    invoke-static {}, Lmiui/securityspace/XSpaceUserHandle;->isXSpaceUserCalling()Z
+
+    move-result v8
+
+    if-eqz v8, :cond_miui_1
+
+    or-int/lit16 p2, p2, 0x2000
+
+    invoke-direct {p0, p1, p2, p3}, Lcom/android/server/pm/PackageManagerService;->generatePackageInfoFromSettingsLPw(Ljava/lang/String;II)Landroid/content/pm/PackageInfo;
 
     move-result-object v0
+
+    :cond_miui_1
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catchall_0
 
     monitor-exit v1
 
@@ -59761,7 +59800,7 @@
     iget-object v2, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 14742
-    const-string/jumbo v3, "android.permission.GET_PACKAGE_SIZE"
+    const-string v3, "android.permission.GET_PACKAGE_SIZE"
 
     .line 14741
     invoke-virtual {v2, v3, v4}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
@@ -59772,7 +59811,7 @@
     .line 14744
     new-instance v2, Ljava/lang/IllegalArgumentException;
 
-    const-string/jumbo v3, "Attempt to get size of null packageName"
+    const-string v3, "Attempt to get size of null packageName"
 
     invoke-direct {v2, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
 
@@ -59855,7 +59894,7 @@
 
     move-result v1
 
-    const-string/jumbo v5, "get package uid"
+    const-string v5, "get package uid"
 
     move-object v0, p0
 
@@ -60495,7 +60534,7 @@
 
     .line 3851
     :cond_0
-    const-string/jumbo v0, "getPermissionFlags"
+    const-string v0, "getPermissionFlags"
 
     invoke-direct {p0, v0}, Lcom/android/server/pm/PackageManagerService;->enforceGrantRevokeRuntimePermissionPermissions(Ljava/lang/String;)V
 
@@ -60505,7 +60544,7 @@
     move-result v1
 
     .line 3854
-    const-string/jumbo v5, "getPermissionFlags"
+    const-string v5, "getPermissionFlags"
 
     .line 3853
     const/4 v3, 0x1
@@ -60542,7 +60581,7 @@
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "Unknown package: "
+    const-string v3, "Unknown package: "
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -60596,7 +60635,7 @@
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "Unknown permission: "
+    const-string v3, "Unknown permission: "
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -60631,7 +60670,7 @@
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "Unknown package: "
+    const-string v3, "Unknown package: "
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -61079,7 +61118,7 @@
     .line 15271
     new-instance v3, Ljava/lang/SecurityException;
 
-    const-string/jumbo v4, "Only the system may call getPreferredActivityBackup()"
+    const-string v4, "Only the system may call getPreferredActivityBackup()"
 
     invoke-direct {v3, v4}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
@@ -61120,7 +61159,7 @@
     invoke-interface {v2, v4, v3}, Lorg/xmlpull/v1/XmlSerializer;->startDocument(Ljava/lang/String;Ljava/lang/Boolean;)V
 
     .line 15279
-    const-string/jumbo v3, "pa"
+    const-string v3, "pa"
 
     const/4 v4, 0x0
 
@@ -61147,7 +61186,7 @@
     monitor-exit v4
 
     .line 15285
-    const-string/jumbo v3, "pa"
+    const-string v3, "pa"
 
     const/4 v4, 0x0
 
@@ -61328,7 +61367,7 @@
 
     move-result v1
 
-    const-string/jumbo v5, "get provider info"
+    const-string v5, "get provider info"
 
     move-object v0, p0
 
@@ -61458,7 +61497,7 @@
 
     move-result v1
 
-    const-string/jumbo v5, "get receiver info"
+    const-string v5, "get receiver info"
 
     move-object v0, p0
 
@@ -61588,7 +61627,7 @@
 
     move-result v1
 
-    const-string/jumbo v5, "get service info"
+    const-string v5, "get service info"
 
     move-object v0, p0
 
@@ -61619,6 +61658,15 @@
 
     .line 3243
     .local v7, "s":Landroid/content/pm/PackageParser$Service;
+    invoke-static {}, Lmiui/securityspace/XSpaceUserHandle;->isXSpaceUserCalling()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_miui_1
+
+    or-int/lit16 p2, p2, 0x2000
+
+    :cond_miui_1
     if-eqz v7, :cond_2
 
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService;->mSettings:Lcom/android/server/pm/Settings;
@@ -61724,13 +61772,13 @@
     if-nez v1, :cond_1
 
     .line 17717
-    const-string/jumbo v2, "PackageManager"
+    const-string v2, "PackageManager"
 
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v5, "KeySet requested for unknown package:"
+    const-string v5, "KeySet requested for unknown package:"
 
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -61753,7 +61801,7 @@
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v5, "Unknown package: "
+    const-string v5, "Unknown package: "
 
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -61808,7 +61856,7 @@
     .line 17722
     new-instance v2, Ljava/lang/SecurityException;
 
-    const-string/jumbo v4, "May not access signing KeySet of other apps."
+    const-string v4, "May not access signing KeySet of other apps."
 
     invoke-direct {v2, v4}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
@@ -61880,7 +61928,7 @@
 
     .line 3309
     .local v2, "fi":Landroid/content/pm/FeatureInfo;
-    const-string/jumbo v4, "ro.opengles.version"
+    const-string v4, "ro.opengles.version"
 
     .line 3310
     const/4 v6, 0x0
@@ -62065,7 +62113,7 @@
     .line 17771
     iget-object v9, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
-    const-string/jumbo v10, "usagestats"
+    const-string v10, "usagestats"
 
     invoke-virtual {v9, v10}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
@@ -62080,7 +62128,7 @@
     .line 17773
     new-instance v9, Ljava/lang/IllegalStateException;
 
-    const-string/jumbo v10, "UsageStatsManager must be initialized"
+    const-string v10, "UsageStatsManager must be initialized"
 
     invoke-direct {v9, v10}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
 
@@ -62199,10 +62247,10 @@
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 17479
-    const-string/jumbo v1, "android.permission.PACKAGE_VERIFICATION_AGENT"
+    const-string v1, "android.permission.PACKAGE_VERIFICATION_AGENT"
 
     .line 17480
-    const-string/jumbo v2, "Only package verification agents can read the verifier device identity"
+    const-string v2, "Only package verification agents can read the verifier device identity"
 
     .line 17478
     invoke-virtual {v0, v1, v2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
@@ -62242,7 +62290,7 @@
 
     .prologue
     .line 18064
-    const-string/jumbo v2, "grantPermissionsToEnabledCarrierApps"
+    const-string v2, "grantPermissionsToEnabledCarrierApps"
 
     invoke-static {v2}, Lcom/android/server/pm/PackageManagerService;->enforceSystemOrPhoneCaller(Ljava/lang/String;)V
 
@@ -62321,13 +62369,13 @@
     if-nez v2, :cond_0
 
     .line 3655
-    const-string/jumbo v2, "PackageManager"
+    const-string v2, "PackageManager"
 
     new-instance v3, Ljava/lang/StringBuilder;
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v4, "No such user:"
+    const-string v4, "No such user:"
 
     invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -62355,10 +62403,10 @@
     iget-object v2, v0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 3660
-    const-string/jumbo v3, "android.permission.GRANT_RUNTIME_PERMISSIONS"
+    const-string v3, "android.permission.GRANT_RUNTIME_PERMISSIONS"
 
     .line 3661
-    const-string/jumbo v4, "grantRuntimePermission"
+    const-string v4, "grantRuntimePermission"
 
     .line 3659
     invoke-virtual {v2, v3, v4}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
@@ -62369,7 +62417,7 @@
     move-result v3
 
     .line 3664
-    const-string/jumbo v7, "grantRuntimePermission"
+    const-string v7, "grantRuntimePermission"
 
     .line 3663
     const/4 v5, 0x1
@@ -62414,7 +62462,7 @@
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v5, "Unknown package: "
+    const-string v5, "Unknown package: "
 
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -62474,7 +62522,7 @@
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v5, "Unknown permission: "
+    const-string v5, "Unknown permission: "
 
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -62526,7 +62574,7 @@
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v5, "Unknown package: "
+    const-string v5, "Unknown package: "
 
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -62575,7 +62623,7 @@
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v5, "Cannot grant system fixed permission: "
+    const-string v5, "Cannot grant system fixed permission: "
 
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -62588,7 +62636,7 @@
     move-result-object v4
 
     .line 3693
-    const-string/jumbo v5, " for package: "
+    const-string v5, " for package: "
 
     .line 3692
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -62679,7 +62727,7 @@
     monitor-exit v3
 
     .line 3733
-    const-string/jumbo v2, "android.permission.READ_EXTERNAL_STORAGE"
+    const-string v2, "android.permission.READ_EXTERNAL_STORAGE"
 
     move-object/from16 v0, p2
 
@@ -62690,7 +62738,7 @@
     if-nez v2, :cond_7
 
     .line 3734
-    const-string/jumbo v2, "android.permission.WRITE_EXTERNAL_STORAGE"
+    const-string v2, "android.permission.WRITE_EXTERNAL_STORAGE"
 
     move-object/from16 v0, p2
 
@@ -62864,7 +62912,7 @@
     .line 10751
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
-    const-string/jumbo v2, "android.permission.INSTALL_PACKAGES"
+    const-string v2, "android.permission.INSTALL_PACKAGES"
 
     invoke-virtual {v0, v2, v4}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
@@ -62879,7 +62927,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v2, "installExistingPackage for user "
+    const-string v2, "installExistingPackage for user "
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -62902,7 +62950,7 @@
     invoke-virtual/range {v0 .. v5}, Lcom/android/server/pm/PackageManagerService;->enforceCrossUserPermission(IIZZLjava/lang/String;)V
 
     .line 10757
-    const-string/jumbo v0, "no_install_apps"
+    const-string v0, "no_install_apps"
 
     invoke-virtual {p0, p2, v0}, Lcom/android/server/pm/PackageManagerService;->isUserRestricted(ILjava/lang/String;)Z
 
@@ -63094,7 +63142,7 @@
 
     iget-object v2, v0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
-    const-string/jumbo v4, "android.permission.INSTALL_PACKAGES"
+    const-string v4, "android.permission.INSTALL_PACKAGES"
 
     const/4 v5, 0x0
 
@@ -63107,7 +63155,7 @@
 
     .line 10565
     .local v3, "callingUid":I
-    const-string/jumbo v7, "installPackageAsUser"
+    const-string v7, "installPackageAsUser"
 
     const/4 v5, 0x1
 
@@ -63120,7 +63168,7 @@
     invoke-virtual/range {v2 .. v7}, Lcom/android/server/pm/PackageManagerService;->enforceCrossUserPermission(IIZZLjava/lang/String;)V
 
     .line 10567
-    const-string/jumbo v2, "no_install_apps"
+    const-string v2, "no_install_apps"
 
     move-object/from16 v0, p0
 
@@ -63137,7 +63185,7 @@
 
     .line 10570
     :try_start_0
-    const-string/jumbo v2, ""
+    const-string v2, ""
 
     const/16 v4, -0x6f
 
@@ -63191,7 +63239,7 @@
 
     iget-object v2, v0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
-    const-string/jumbo v4, "android.permission.INSTALL_GRANT_RUNTIME_PERMISSIONS"
+    const-string v4, "android.permission.INSTALL_GRANT_RUNTIME_PERMISSIONS"
 
     invoke-virtual {v2, v4}, Landroid/content/Context;->checkCallingOrSelfPermission(Ljava/lang/String;)I
 
@@ -63206,7 +63254,7 @@
     .line 10599
     new-instance v2, Ljava/lang/SecurityException;
 
-    const-string/jumbo v4, "You need the android.permission.INSTALL_GRANT_RUNTIME_PERMISSIONS permission to use the PackageManager.INSTALL_GRANT_RUNTIME_PERMISSIONS flag"
+    const-string v4, "You need the android.permission.INSTALL_GRANT_RUNTIME_PERMISSIONS permission to use the PackageManager.INSTALL_GRANT_RUNTIME_PERMISSIONS flag"
 
     invoke-direct {v2, v4}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
@@ -63773,7 +63821,7 @@
 
     move-result v1
 
-    const-string/jumbo v5, "is package available"
+    const-string v5, "is package available"
 
     move-object v0, p0
 
@@ -63820,6 +63868,11 @@
     .local v8, "state":Landroid/content/pm/PackageUserState;
     if-eqz v8, :cond_1
 
+    invoke-static {}, Lmiui/securityspace/XSpaceUserHandle;->isXSpaceUserCalling()Z
+    
+    move-result v0
+    
+    if-nez v0, :cond_1
     .line 2852
     invoke-static {v8}, Landroid/content/pm/PackageParser;->isAvailable(Landroid/content/pm/PackageUserState;)Z
     :try_end_0
@@ -63888,13 +63941,13 @@
     monitor-exit v2
 
     .line 2837
-    const-string/jumbo v1, "PackageManager"
+    const-string v1, "PackageManager"
 
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "Package "
+    const-string v3, "Package "
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -63904,7 +63957,7 @@
 
     move-result-object v2
 
-    const-string/jumbo v3, " is missing; assuming frozen"
+    const-string v3, " is missing; assuming frozen"
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -63969,13 +64022,13 @@
     if-nez v2, :cond_2
 
     .line 17737
-    const-string/jumbo v3, "PackageManager"
+    const-string v3, "PackageManager"
 
     new-instance v5, Ljava/lang/StringBuilder;
 
     invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v6, "KeySet requested for unknown package:"
+    const-string v6, "KeySet requested for unknown package:"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -63998,7 +64051,7 @@
 
     invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v6, "Unknown package: "
+    const-string v6, "Unknown package: "
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -64108,13 +64161,13 @@
     if-nez v2, :cond_2
 
     .line 17757
-    const-string/jumbo v3, "PackageManager"
+    const-string v3, "PackageManager"
 
     new-instance v5, Ljava/lang/StringBuilder;
 
     invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v6, "KeySet requested for unknown package:"
+    const-string v6, "KeySet requested for unknown package:"
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -64137,7 +64190,7 @@
 
     invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v6, "Unknown package: "
+    const-string v6, "Unknown package: "
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -64242,14 +64295,14 @@
     iget-object v4, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 3400
-    const-string/jumbo v5, "android.permission.INTERACT_ACROSS_USERS_FULL"
+    const-string v5, "android.permission.INTERACT_ACROSS_USERS_FULL"
 
     .line 3401
     new-instance v6, Ljava/lang/StringBuilder;
 
     invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v7, "isPermissionRevokedByPolicy for user "
+    const-string v7, "isPermissionRevokedByPolicy for user "
 
     invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -64647,13 +64700,13 @@
     if-eqz v1, :cond_0
 
     .line 10792
-    const-string/jumbo v1, "PackageManager"
+    const-string v1, "PackageManager"
 
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "User is restricted: "
+    const-string v3, "User is restricted: "
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -64688,7 +64741,7 @@
     .line 17091
     iget-object v1, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
-    const-string/jumbo v2, "android.permission.MOVE_PACKAGE"
+    const-string v2, "android.permission.MOVE_PACKAGE"
 
     const/4 v3, 0x0
 
@@ -64728,7 +64781,7 @@
     .line 17320
     iget-object v4, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
-    const-string/jumbo v5, "android.permission.MOVE_PACKAGE"
+    const-string v5, "android.permission.MOVE_PACKAGE"
 
     const/4 v6, 0x0
 
@@ -64749,7 +64802,7 @@
 
     .line 17324
     .local v1, "extras":Landroid/os/Bundle;
-    const-string/jumbo v4, "android.os.storage.extra.FS_UUID"
+    const-string v4, "android.os.storage.extra.FS_UUID"
 
     invoke-virtual {v1, v4, p1}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
 
@@ -64921,9 +64974,9 @@
 
     .line 2776
     :cond_1
-    const-string/jumbo v1, "PackageManager"
+    const-string v1, "PackageManager"
 
-    const-string/jumbo v2, "Package Manager Crash"
+    const-string v2, "Package Manager Crash"
 
     invoke-static {v1, v2, v0}, Landroid/util/Slog;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
@@ -66632,7 +66685,7 @@
 
     move-result v5
 
-    const-string/jumbo v9, "query intent activities"
+    const-string v9, "query intent activities"
 
     const/4 v7, 0x0
 
@@ -67172,7 +67225,7 @@
     move-result v5
 
     .line 5199
-    const-string/jumbo v9, "query intent activity options"
+    const-string v9, "query intent activity options"
 
     .line 5198
     const/4 v7, 0x0
@@ -68782,7 +68835,7 @@
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 17354
-    const-string/jumbo v1, "android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+    const-string v1, "android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
 
     const/4 v2, 0x0
 
@@ -68876,9 +68929,9 @@
 
     .prologue
     .line 14849
-    const-string/jumbo v0, "PackageManager"
+    const-string v0, "PackageManager"
 
-    const-string/jumbo v1, "removePackageFromPreferred: this is now a no-op"
+    const-string v1, "removePackageFromPreferred: this is now a no-op"
 
     invoke-static {v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
 
@@ -68977,7 +69030,7 @@
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v4, "Not allowed to modify non-dynamic permission "
+    const-string v4, "Not allowed to modify non-dynamic permission "
 
     invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -69053,7 +69106,7 @@
     new-instance v1, Ljava/lang/IllegalArgumentException;
 
     .line 14925
-    const-string/jumbo v3, "replacePreferredActivity expects filter to have only 1 action."
+    const-string v3, "replacePreferredActivity expects filter to have only 1 action."
 
     .line 14924
     invoke-direct {v1, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
@@ -69080,7 +69133,7 @@
     new-instance v1, Ljava/lang/IllegalArgumentException;
 
     .line 14932
-    const-string/jumbo v3, "replacePreferredActivity expects filter to have no data authorities, paths, or types; and at most one scheme."
+    const-string v3, "replacePreferredActivity expects filter to have no data authorities, paths, or types; and at most one scheme."
 
     .line 14931
     invoke-direct {v1, v3}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
@@ -69111,7 +69164,7 @@
 
     .line 14937
     .local v2, "callingUid":I
-    const-string/jumbo v6, "replace preferred activity"
+    const-string v6, "replace preferred activity"
 
     const/4 v4, 0x1
 
@@ -69139,7 +69192,7 @@
     iget-object v1, v0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 14940
-    const-string/jumbo v3, "android.permission.SET_PREFERRED_APPLICATIONS"
+    const-string v3, "android.permission.SET_PREFERRED_APPLICATIONS"
 
     .line 14939
     invoke-virtual {v1, v3}, Landroid/content/Context;->checkCallingOrSelfPermission(Ljava/lang/String;)I
@@ -69162,13 +69215,13 @@
     if-ge v1, v3, :cond_3
 
     .line 14944
-    const-string/jumbo v1, "PackageManager"
+    const-string v1, "PackageManager"
 
     new-instance v3, Ljava/lang/StringBuilder;
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v4, "Ignoring replacePreferredActivity() from uid "
+    const-string v4, "Ignoring replacePreferredActivity() from uid "
 
     invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -69205,7 +69258,7 @@
     iget-object v1, v0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 14949
-    const-string/jumbo v3, "android.permission.SET_PREFERRED_APPLICATIONS"
+    const-string v3, "android.permission.SET_PREFERRED_APPLICATIONS"
 
     const/4 v4, 0x0
 
@@ -69348,7 +69401,7 @@
     .end local v13    # "i":I
     .end local v14    # "pa":Lcom/android/server/pm/PreferredActivity;
     :cond_6
-    const-string/jumbo v10, "Replacing preferred"
+    const-string v10, "Replacing preferred"
 
     .line 15004
     const/4 v8, 0x1
@@ -69395,7 +69448,7 @@
     iget-object v2, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 15110
-    const-string/jumbo v3, "android.permission.SET_PREFERRED_APPLICATIONS"
+    const-string v3, "android.permission.SET_PREFERRED_APPLICATIONS"
 
     .line 15109
     invoke-virtual {v2, v3, v4}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
@@ -69486,10 +69539,10 @@
     iget-object v7, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 3819
-    const-string/jumbo v8, "android.permission.REVOKE_RUNTIME_PERMISSIONS"
+    const-string v8, "android.permission.REVOKE_RUNTIME_PERMISSIONS"
 
     .line 3820
-    const-string/jumbo v9, "revokeRuntimePermission"
+    const-string v9, "revokeRuntimePermission"
 
     .line 3818
     invoke-virtual {v7, v8, v9}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
@@ -69511,10 +69564,10 @@
     iget-object v7, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 3825
-    const-string/jumbo v8, "android.permission.INTERACT_ACROSS_USERS_FULL"
+    const-string v8, "android.permission.INTERACT_ACROSS_USERS_FULL"
 
     .line 3826
-    const-string/jumbo v9, "resetRuntimePermissions"
+    const-string v9, "resetRuntimePermissions"
 
     .line 3824
     invoke-virtual {v7, v8, v9}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
@@ -69788,7 +69841,7 @@
 
     move-result v1
 
-    const-string/jumbo v5, "resolve intent"
+    const-string v5, "resolve intent"
 
     move-object v0, p0
 
@@ -69896,7 +69949,7 @@
     .line 15362
     new-instance v2, Ljava/lang/SecurityException;
 
-    const-string/jumbo v3, "Only the system may call restoreDefaultApps()"
+    const-string v3, "Only the system may call restoreDefaultApps()"
 
     invoke-direct {v2, v3}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
@@ -69924,7 +69977,7 @@
     invoke-interface {v1, v2, v3}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
 
     .line 15368
-    const-string/jumbo v2, "da"
+    const-string v2, "da"
 
     .line 15369
     new-instance v3, Lcom/android/server/pm/PackageManagerService$17;
@@ -69967,7 +70020,7 @@
     .line 15418
     new-instance v2, Ljava/lang/SecurityException;
 
-    const-string/jumbo v3, "Only the system may call restorePreferredActivities()"
+    const-string v3, "Only the system may call restorePreferredActivities()"
 
     invoke-direct {v2, v3}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
@@ -69995,7 +70048,7 @@
     invoke-interface {v1, v2, v3}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
 
     .line 15424
-    const-string/jumbo v2, "iv"
+    const-string v2, "iv"
 
     .line 15425
     new-instance v3, Lcom/android/server/pm/PackageManagerService$18;
@@ -70038,7 +70091,7 @@
     .line 15301
     new-instance v2, Ljava/lang/SecurityException;
 
-    const-string/jumbo v3, "Only the system may call restorePreferredActivities()"
+    const-string v3, "Only the system may call restorePreferredActivities()"
 
     invoke-direct {v2, v3}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
@@ -70066,7 +70119,7 @@
     invoke-interface {v1, v2, v3}, Lorg/xmlpull/v1/XmlPullParser;->setInput(Ljava/io/InputStream;Ljava/lang/String;)V
 
     .line 15307
-    const-string/jumbo v2, "pa"
+    const-string v2, "pa"
 
     .line 15308
     new-instance v3, Lcom/android/server/pm/PackageManagerService$16;
@@ -70108,13 +70161,13 @@
     if-nez v0, :cond_0
 
     .line 3751
-    const-string/jumbo v0, "PackageManager"
+    const-string v0, "PackageManager"
 
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v2, "No such user:"
+    const-string v2, "No such user:"
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -70138,10 +70191,10 @@
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 3756
-    const-string/jumbo v1, "android.permission.REVOKE_RUNTIME_PERMISSIONS"
+    const-string v1, "android.permission.REVOKE_RUNTIME_PERMISSIONS"
 
     .line 3757
-    const-string/jumbo v2, "revokeRuntimePermission"
+    const-string v2, "revokeRuntimePermission"
 
     .line 3755
     invoke-virtual {v0, v1, v2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
@@ -70152,7 +70205,7 @@
     move-result v1
 
     .line 3760
-    const-string/jumbo v5, "revokeRuntimePermission"
+    const-string v5, "revokeRuntimePermission"
 
     .line 3759
     const/4 v3, 0x1
@@ -70191,7 +70244,7 @@
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "Unknown package: "
+    const-string v3, "Unknown package: "
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -70245,7 +70298,7 @@
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "Unknown permission: "
+    const-string v3, "Unknown permission: "
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -70283,7 +70336,7 @@
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "Unknown package: "
+    const-string v3, "Unknown package: "
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -70326,7 +70379,7 @@
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "Cannot revoke system fixed permission: "
+    const-string v3, "Cannot revoke system fixed permission: "
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -70337,7 +70390,7 @@
     move-result-object v2
 
     .line 3787
-    const-string/jumbo v3, " for package: "
+    const-string v3, " for package: "
 
     .line 3786
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -70439,7 +70492,7 @@
     monitor-exit v1
 
     .line 3813
-    const-string/jumbo v0, "permissions revoked"
+    const-string v0, "permissions revoked"
 
     invoke-direct {p0, v6, p3, v0}, Lcom/android/server/pm/PackageManagerService;->killUid(IILjava/lang/String;)V
 
@@ -70727,7 +70780,7 @@
     .line 10665
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
-    const-string/jumbo v2, "android.permission.MANAGE_USERS"
+    const-string v2, "android.permission.MANAGE_USERS"
 
     invoke-virtual {v0, v2, v4}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
@@ -70742,7 +70795,7 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v2, "setApplicationHiddenSetting for user "
+    const-string v2, "setApplicationHiddenSetting for user "
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -70775,13 +70828,13 @@
     if-eqz v0, :cond_0
 
     .line 10672
-    const-string/jumbo v0, "PackageManager"
+    const-string v0, "PackageManager"
 
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v3, "Not hiding package "
+    const-string v3, "Not hiding package "
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -70791,7 +70844,7 @@
 
     move-result-object v2
 
-    const-string/jumbo v3, ": has active device admin"
+    const-string v3, ": has active device admin"
 
     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -70944,7 +70997,7 @@
     move-result v0
 
     .line 10702
-    const-string/jumbo v2, "hiding pkg"
+    const-string v2, "hiding pkg"
 
     .line 10701
     invoke-direct {p0, p1, v0, v2}, Lcom/android/server/pm/PackageManagerService;->killApplication(Ljava/lang/String;ILjava/lang/String;)V
@@ -70983,7 +71036,7 @@
     iget-object v1, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 14219
-    const-string/jumbo v2, "android.permission.DELETE_PACKAGES"
+    const-string v2, "android.permission.DELETE_PACKAGES"
 
     .line 14218
     invoke-virtual {v1, v2, v3}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
@@ -71010,13 +71063,13 @@
     if-nez v0, :cond_0
 
     .line 14223
-    const-string/jumbo v1, "PackageManager"
+    const-string v1, "PackageManager"
 
     new-instance v3, Ljava/lang/StringBuilder;
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v4, "Package doesn\'t exist in set block uninstall "
+    const-string v4, "Package doesn\'t exist in set block uninstall "
 
     invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -71049,13 +71102,13 @@
     if-nez v1, :cond_1
 
     .line 14228
-    const-string/jumbo v1, "PackageManager"
+    const-string v1, "PackageManager"
 
     new-instance v3, Ljava/lang/StringBuilder;
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v4, "Package not installed in set block uninstall "
+    const-string v4, "Package not installed in set block uninstall "
 
     invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -71592,7 +71645,7 @@
     iget-object v1, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 11090
-    const-string/jumbo v2, "android.permission.SET_PREFERRED_APPLICATIONS"
+    const-string v2, "android.permission.SET_PREFERRED_APPLICATIONS"
 
     .line 11089
     invoke-virtual {v1, v2, v3}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
@@ -71659,7 +71712,7 @@
     .line 17367
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
-    const-string/jumbo v1, "android.permission.WRITE_SECURE_SETTINGS"
+    const-string v1, "android.permission.WRITE_SECURE_SETTINGS"
 
     .line 17368
     const/4 v2, 0x0
@@ -71692,7 +71745,7 @@
     move-result-object v0
 
     .line 17375
-    const-string/jumbo v1, "default_install_location"
+    const-string v1, "default_install_location"
 
     .line 17374
     invoke-static {v0, v1, p1}, Landroid/provider/Settings$Global;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
@@ -71750,7 +71803,7 @@
 
     invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v9, "Unknown target package: "
+    const-string v9, "Unknown target package: "
 
     invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -71807,7 +71860,7 @@
 
     invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v9, "Unknown installer package: "
+    const-string v9, "Unknown installer package: "
 
     invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -71880,7 +71933,7 @@
 
     invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v9, "Caller does not have same cert as new installer package "
+    const-string v9, "Caller does not have same cert as new installer package "
 
     invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -71928,7 +71981,7 @@
 
     invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v9, "Bad object "
+    const-string v9, "Bad object "
 
     invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -71938,7 +71991,7 @@
 
     move-result-object v8
 
-    const-string/jumbo v9, " for uid "
+    const-string v9, " for uid "
 
     invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -71964,7 +72017,7 @@
 
     invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v9, "Unknown calling uid "
+    const-string v9, "Unknown calling uid "
 
     invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -72029,7 +72082,7 @@
 
     invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v9, "Caller does not have same cert as old installer package "
+    const-string v9, "Caller does not have same cert as old installer package "
 
     invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -72126,7 +72179,7 @@
     invoke-virtual/range {v4 .. v13}, Lcom/android/server/pm/PackageManagerService;->findPreferredActivity(Landroid/content/Intent;Ljava/lang/String;ILjava/util/List;IZZZI)Landroid/content/pm/ResolveInfo;
 
     .line 4407
-    const-string/jumbo v21, "Setting last chosen"
+    const-string v21, "Setting last chosen"
 
     .line 4406
     const/16 v17, 0x0
@@ -72180,7 +72233,7 @@
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 15707
-    const-string/jumbo v2, "android.permission.CHANGE_COMPONENT_ENABLED_STATE"
+    const-string v2, "android.permission.CHANGE_COMPONENT_ENABLED_STATE"
 
     .line 15706
     invoke-virtual {v0, v2}, Landroid/content/Context;->checkCallingOrSelfPermission(Ljava/lang/String;)I
@@ -72196,7 +72249,7 @@
     .line 15709
     .local v6, "allowedByPermission":Z
     :goto_0
-    const-string/jumbo v5, "stop package"
+    const-string v5, "stop package"
 
     move-object v0, p0
 
@@ -72268,16 +72321,16 @@
     .line 17490
     iget-object v4, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
-    const-string/jumbo v5, "android.permission.GRANT_RUNTIME_PERMISSIONS"
+    const-string v5, "android.permission.GRANT_RUNTIME_PERMISSIONS"
 
     .line 17491
-    const-string/jumbo v6, "setPermissionEnforced"
+    const-string v6, "setPermissionEnforced"
 
     .line 17490
     invoke-virtual {v4, v5, v6}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 17492
-    const-string/jumbo v4, "android.permission.READ_EXTERNAL_STORAGE"
+    const-string v4, "android.permission.READ_EXTERNAL_STORAGE"
 
     invoke-virtual {v4, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
 
@@ -72346,7 +72399,7 @@
     .line 17506
     .local v2, "token":J
     :try_start_1
-    const-string/jumbo v4, "setPermissionEnforcement"
+    const-string v4, "setPermissionEnforcement"
 
     invoke-interface {v0, v4}, Landroid/app/IActivityManager;->killProcessesBelowForeground(Ljava/lang/String;)Z
     :try_end_1
@@ -72404,7 +72457,7 @@
 
     invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v6, "No selective enforcement for "
+    const-string v6, "No selective enforcement for "
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -72443,14 +72496,14 @@
     iget-object v6, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 3992
-    const-string/jumbo v7, "android.permission.INTERACT_ACROSS_USERS_FULL"
+    const-string v7, "android.permission.INTERACT_ACROSS_USERS_FULL"
 
     .line 3993
     new-instance v8, Ljava/lang/StringBuilder;
 
     invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v9, "canShowRequestPermissionRationale for user "
+    const-string v9, "canShowRequestPermissionRationale for user "
 
     invoke-virtual {v8, v9}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -72620,7 +72673,7 @@
     .line 10537
     new-instance v2, Landroid/content/Intent;
 
-    const-string/jumbo v1, "android.content.pm.CLEAN_EXTERNAL_STORAGE"
+    const-string v1, "android.content.pm.CLEAN_EXTERNAL_STORAGE"
 
     invoke-direct {v2, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
@@ -72705,7 +72758,7 @@
     move-result-object v14
 
     .line 15765
-    const-string/jumbo v15, "compatibility_mode"
+    const-string v15, "compatibility_mode"
 
     const/16 v16, 0x1
 
@@ -72897,13 +72950,13 @@
 
     .line 15797
     .restart local v7    # "pa":Lcom/android/server/pm/PreferredActivity;
-    const-string/jumbo v14, "PackageManager"
+    const-string v14, "PackageManager"
 
     new-instance v16, Ljava/lang/StringBuilder;
 
     invoke-direct/range {v16 .. v16}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v17, "Removing dangling preferred activity: "
+    const-string v17, "Removing dangling preferred activity: "
 
     invoke-virtual/range {v16 .. v17}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -73189,7 +73242,7 @@
     iget-object v0, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 17361
-    const-string/jumbo v1, "android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+    const-string v1, "android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
 
     const/4 v2, 0x0
 
@@ -73229,7 +73282,7 @@
     .line 16528
     new-instance v2, Ljava/lang/SecurityException;
 
-    const-string/jumbo v3, "Media status can only be updated by the system"
+    const-string v3, "Media status can only be updated by the system"
 
     invoke-direct {v2, v3}, Ljava/lang/SecurityException;-><init>(Ljava/lang/String;)V
 
@@ -73243,13 +73296,13 @@
 
     .line 16533
     :try_start_0
-    const-string/jumbo v5, "PackageManager"
+    const-string v5, "PackageManager"
 
     new-instance v3, Ljava/lang/StringBuilder;
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v6, "Updating external media status from "
+    const-string v6, "Updating external media status from "
 
     invoke-virtual {v3, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -73260,7 +73313,7 @@
 
     if-eqz v3, :cond_2
 
-    const-string/jumbo v3, "mounted"
+    const-string v3, "mounted"
 
     .line 16533
     :goto_0
@@ -73269,7 +73322,7 @@
     move-result-object v3
 
     .line 16534
-    const-string/jumbo v6, " to "
+    const-string v6, " to "
 
     .line 16533
     invoke-virtual {v3, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
@@ -73279,7 +73332,7 @@
     .line 16535
     if-eqz p1, :cond_3
 
-    const-string/jumbo v3, "mounted"
+    const-string v3, "mounted"
 
     .line 16533
     :goto_1
@@ -73333,13 +73386,13 @@
     .end local v1    # "msg":Landroid/os/Message;
     :cond_2
     :try_start_1
-    const-string/jumbo v3, "unmounted"
+    const-string v3, "unmounted"
 
     goto :goto_0
 
     .line 16535
     :cond_3
-    const-string/jumbo v3, "unmounted"
+    const-string v3, "unmounted"
 
     goto :goto_1
 
@@ -73582,7 +73635,7 @@
     iget-object v1, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 11046
-    const-string/jumbo v2, "android.permission.SET_PREFERRED_APPLICATIONS"
+    const-string v2, "android.permission.SET_PREFERRED_APPLICATIONS"
 
     const/4 v3, 0x0
 
@@ -73656,7 +73709,7 @@
 
     .line 3884
     :cond_0
-    const-string/jumbo v3, "updatePermissionFlags"
+    const-string v3, "updatePermissionFlags"
 
     invoke-direct {p0, v3}, Lcom/android/server/pm/PackageManagerService;->enforceGrantRevokeRuntimePermissionPermissions(Ljava/lang/String;)V
 
@@ -73666,7 +73719,7 @@
     move-result v4
 
     .line 3887
-    const-string/jumbo v8, "updatePermissionFlags"
+    const-string v8, "updatePermissionFlags"
 
     .line 3886
     const/4 v6, 0x1
@@ -73729,7 +73782,7 @@
 
     invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v6, "Unknown package: "
+    const-string v6, "Unknown package: "
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -73787,7 +73840,7 @@
 
     invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v6, "Unknown permission: "
+    const-string v6, "Unknown permission: "
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -73824,7 +73877,7 @@
 
     invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string/jumbo v6, "Unknown package: "
+    const-string v6, "Unknown package: "
 
     invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -73985,7 +74038,7 @@
 
     .line 3946
     :cond_0
-    const-string/jumbo v0, "updatePermissionFlagsForAllApps"
+    const-string v0, "updatePermissionFlagsForAllApps"
 
     invoke-direct {p0, v0}, Lcom/android/server/pm/PackageManagerService;->enforceGrantRevokeRuntimePermissionPermissions(Ljava/lang/String;)V
 
@@ -73995,7 +74048,7 @@
     move-result v1
 
     .line 3949
-    const-string/jumbo v5, "updatePermissionFlagsForAllApps"
+    const-string v5, "updatePermissionFlagsForAllApps"
 
     .line 3948
     const/4 v3, 0x1
@@ -74150,10 +74203,10 @@
     iget-object v2, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 11025
-    const-string/jumbo v3, "android.permission.INTENT_FILTER_VERIFICATION_AGENT"
+    const-string v3, "android.permission.INTENT_FILTER_VERIFICATION_AGENT"
 
     .line 11026
-    const-string/jumbo v4, "Only intentfilter verification agents can verify applications"
+    const-string v4, "Only intentfilter verification agents can verify applications"
 
     .line 11024
     invoke-virtual {v2, v3, v4}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
@@ -74210,10 +74263,10 @@
     iget-object v2, p0, Lcom/android/server/pm/PackageManagerService;->mContext:Landroid/content/Context;
 
     .line 10801
-    const-string/jumbo v3, "android.permission.PACKAGE_VERIFICATION_AGENT"
+    const-string v3, "android.permission.PACKAGE_VERIFICATION_AGENT"
 
     .line 10802
-    const-string/jumbo v4, "Only package verification agents can verify applications"
+    const-string v4, "Only package verification agents can verify applications"
 
     .line 10800
     invoke-virtual {v2, v3, v4}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V

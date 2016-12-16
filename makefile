@@ -9,7 +9,7 @@ local-out-zip-file := MIUI_d816d.zip
 
 local-modified-jars := org.cyanogenmod.platform
 local-miui-removed-apps := FM
-local-miui-modified-apps := TeleService InCallUI
+local-miui-modified-apps := TeleService InCallUI MiuiKeyguard
 local-density := XHDPI
 
 local-phone-apps := PrintSpooler PacProcessor CertInstaller KeyChain \
